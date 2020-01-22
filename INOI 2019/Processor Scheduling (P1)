@@ -1,0 +1,44 @@
+// Solution on Codechef--> https://www.codechef.com/viewsolution/28882524
+#include <bits/stdc++.h>
+using namespace std;
+
+#define ll long long int
+#define int ll
+#define inf 1e17
+signed main(){
+  int t;
+  cin >> t;
+  while(t--){
+      int n,m;
+      cin >> n >> m;
+      int ar[n+1] = {0};
+      vector<pair<int,int>> p(m+1,{0,0});
+      
+      for(int i=1;i<=n;i++){cin >> ar[i];}
+      for(int i=1;i<=m;i++){cin >> p[i].second;}
+      for(int i=1;i<=m;i++){cin >> p[i].first;}
+      
+     sort(p.begin()+1,p.end());
+      int dp[n+1][m+1];
+      dp[0][0] = 0;
+    for(int i=0;i<=n;i++){
+      for(int j=0;j<=m;j++){
+         if(i!=0 || j!=0) dp[i][j]=inf;
+         if(j!=0){
+           if(dp[i][j-1]>p[j].first)                    dp[i][j]=inf;
+           else if((dp[i][j-1]+p[j].second)<p[j].first) dp[i][j]=p[j].first;
+           else                                         dp[i][j]=dp[i][j-1]+p[j].second;
+         }
+         if(i!=0){
+           dp[i][j] = min(dp[i][j],dp[i-1][j]+ar[i]);
+         }
+      }
+    }
+  if(dp[n][m] != inf)
+     cout << dp[n][m] << endl;
+  else 
+     cout << -1 << endl;
+
+  }
+    return 0;
+}
