@@ -1,0 +1,55 @@
+// Solution on Codechef--> https://www.codechef.com/viewsolution/28592362
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long int ll;
+ll ans=0;
+void dfs(ll u,vector<ll>adj[],ll vis[]){
+  if(vis[u]==0){
+  vis[u]=1;
+  ans++;
+  }
+  for(auto x:adj[u]){
+      if(x!=1 && vis[x]==0)
+      dfs(x,adj,vis);
+  }
+
+}
+
+int main() {
+    ll n,lim,ar[1000][1000],vis[1000];
+    cin >> n >> lim;
+  vector<ll>adj[1000];
+  for(int i=0;i<305;i++){vis[i]=0;}
+    for(int i=1;i<=n;i++){
+        ll m,br[1000];
+        cin >> m;
+        ar[i][0]=m;
+        for(int j=1;j<=m;j++){
+            cin >> br[j];
+            }
+        sort(br+1,br+m+1);
+        for(int j=1;j<=m;j++){
+             ar[i][j]=br[j];
+        }
+    }
+for(int i=1;i<=n;i++){
+    for(int j=1;j<=n;j++){
+        ll exp[1000],cnt=0;
+        ll p2=ar[j][0];
+        for(int k=1;k<=p2;k++){exp[k-1]=ar[j][k];}
+        ll p1=ar[i][0];
+        if(i!=j)
+        for(int k=1;k<=p1;k++){
+            // ar[i][k] to bs in exp
+            if( binary_search(exp,exp+p2,ar[i][k]) )
+            cnt++;
+            if(cnt>=lim){adj[i].push_back(j);break;}
+        }
+    
+    }
+}
+
+  dfs(1,adj,vis);
+  cout << ans << endl;
+    return 0;
+}
