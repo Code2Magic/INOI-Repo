@@ -1,1 +1,29 @@
+// Solution on Codechef--> https://www.codechef.com/viewsolution/25977927
+#include <bits/stdc++.h>
+using namespace std;
+ 
+int main() {
 
+   int n,k,ar[10000000];
+	 cin >> n >> k;
+	for(int i=1;i<=n;i++){
+	    cin >> ar[i];
+    }
+    int dp1[n+1],dp2[n+1];
+    dp1[1]=ar[1];
+    dp1[2]=ar[1]+ar[2];
+    for(int i=3;i<=n;i++){
+        dp1[i] = ar[i] + max(dp1[i-1],dp1[i-2]);
+    }
+    dp2[k]=0;
+    dp2[k-1]=0;
+    for(int i=k+1;i<=n;i++){
+        dp2[i] = ar[i] + max(dp2[i-1],dp2[i-2]);
+    }
+    int ans = dp1[k]+dp2[k]-ar[k];   
+    for(int i=k;i<=n;i++){
+        ans = max(ans,dp1[i]+dp2[i]-ar[i]);
+    }
+    cout << ans << endl;    
+	return 0;
+}
