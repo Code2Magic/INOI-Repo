@@ -1,0 +1,30 @@
+// Solution on Codechef--> https://www.codechef.com/viewsolution/16733959
+#include <bits/stdc++.h>
+using namespace std;
+
+#define sz 200005
+
+int n,A[sz] ;
+int main() {
+	cin >> n ;
+	for(int i=1;i<=n;i++)
+		cin >> A[i] ;
+ 
+	for(int i=1;i<=n;i++){
+		A[i] += i;
+		A[i] = max(A[i],A[i-1]) ;
+	}
+ 
+	cout << A[n] << " " ;
+	int cnt = 0;
+	for(int i=n;i>1;i--){
+ 
+		A[i] -= n ;
+		A[i] = max(A[i],A[i+1])+1 ;
+		++cnt ;
+		A[i-1] += cnt ;
+		cout << max(A[i],A[i-1]) << " " ;
+	}
+	cout << endl ;
+	return 0;
+} 
