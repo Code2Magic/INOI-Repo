@@ -1,0 +1,50 @@
+// Solution on Codechef--> https://www.codechef.com/viewsolution/28576938
+#include <bits/stdc++.h>
+using namespace std;
+
+const int inf=1e9;
+
+int main(){
+	  int t; 
+    cin >> t;
+	while (t--) {
+		int l,m,n;
+    cin >> n >> m >> l;
+		int mx[n+1][m+1][l+1],mi[n+1][m+1][l+1],p[n+1][m+1];
+	for(int i=1;i<=n;i++){
+		 p[i][0]=0;
+			for(int j=1;j<=m;j++){
+				cin >> p[i][j];
+        p[i][j]+=p[i][j-1];
+			}
+		}
+
+	for(int k=0;k<=l;k++){
+			for(int j=0;j<=m;j++) mx[0][j][k]=mi[0][j][k] = 0;
+			for(int i=0;i<=n;i++) mx[i][0][k]=mi[i][0][k] = 0;
+		}
+
+	for(int i=1;i<=n;i++){
+			for(int j=1;j<=m;j++){
+				mx[i][j][0] = mx[i-1][j][0]+p[i][j];
+				mi[i][j][0] = mi[i-1][j][0]+p[i][j];
+			}
+		}
+
+	for(int i=1;i<=n;i++){
+			for(int j=1;j<=m;j++){
+				for(int k=1;k<=l;k++){
+					mx[i][j][k] = max(mx[i-1][j-1][k-1],mx[i-1][j][k]) + p[i][j];
+					mi[i][j][k] = min(mi[i-1][j-1][k-1],mi[i-1][j][k]) + p[i][j];
+				}
+			}
+		}
+
+		int ans = -inf;
+	for(int a=1;a<=m;a++)
+		for(int b=a+l+1;b<=m;b++)
+				ans=max(ans,mx[n][b][l]-mi[n][a-1][l]);
+		    cout << ans << '\n';
+	}
+    return 0;
+}
