@@ -1,0 +1,66 @@
+// Solution on Codechef--> https://www.codechef.com/viewsolution/29044352
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long int ll;
+#define inf 1e5+7
+ll n,m,emp=0,mn=inf,mx=0,dist[1000000],flag,sum1=0,sum2=0;
+
+void dfs1(ll u,vector<ll>adj[],ll vis[]){
+ vis[u]=1;
+ emp++;
+ mn=min(mn,u);
+ mx=max(mx,u);
+ for(auto k:adj[u]){
+    if(vis[k]==0){
+        dfs1(k,adj,vis);
+    }
+ }
+}
+void dfs2(ll u,vector<ll>adj[],ll vis[]){
+ vis[u]=1;
+ for(auto k:adj[u]){
+    if(vis[k]==0){
+            dist[k]=dist[u]+1;
+            if(flag==0)sum1+=dist[k];
+            else if(flag==1)sum2+=dist[k];
+        dfs2(k,adj,vis);
+    }
+ }
+}
+
+int main(){
+    ios_base::sync_with_stdio(false);
+        ll t;
+        cin >>t;
+   while(t--){
+        ll vis1[1000000],vis2[1000000];
+        vector<ll>adj[1000000];
+        cin >> n >>m;
+      for(int i=1;i<=n;i++){
+      vis2[i]=0;
+      vis1[i]=0;
+      dist[i]=0;
+      }
+      for(int i=1;i<=m;i++){
+                ll x,y;
+        cin >>x >>y;
+        adj[x].push_back(y);
+        adj[y].push_back(x);
+
+      }
+        sum1=0,sum2=0;
+        for(int i=1;i<=n;i++){
+            if(vis1[i]==0){
+                ll src;
+                emp=0,mn=inf,mx=0;
+              dfs1(i,adj,vis1);
+            if(emp%2==0){ src=mn ; flag=0 ; sum1+=1 ;}
+            else        { src=mx ; flag=1 ; sum2+=1; }
+            dist[src] = 1;
+             dfs2(src,adj,vis2);
+            }
+        }
+        cout << sum1 <<" " << sum2 << "\n";
+   }
+    return 0;
+}
