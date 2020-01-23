@@ -1,0 +1,35 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+using ll = long long;
+const ll M = 1e9 + 7;
+const int sz = 1 << 20;
+
+ll f[sz],g[sz],h[sz],t[sz];
+
+ll solve() {
+	int k, n; cin >> k >> n;
+	if (k==1) return (n%3 == 0);
+	if (k==2) return t[n];
+	if (k==3) return f[n];
+}
+
+signed main() {
+	ios_base::sync_with_stdio(false);
+	f[1] = 1; f[2] = 1; f[3] = 2; f[4] = 3;
+	g[1] = 0; g[2] = 0; g[3] = 0; g[4] = 1;
+	h[1] = 0; h[2] = 1; h[3] = 1; h[4] = 1;
+	t[1] = 0; t[2] = 1; t[3] = 1; t[4] = 1;
+	for(auto n=5;n<sz;n++){
+		f[n] = (f[n - 1] + f[n - 3] + 2 * g[n - 2]) % M;
+		g[n] = (h[n - 2] + g[n - 3]) % M;
+		h[n] = (f[n - 2] + h[n - 3]) % M;
+		t[n] = (t[n - 2] + t[n - 3]) % M;
+	}
+	int t;
+  cin >> t;
+	while (t--){
+  cout << solve() << '\n';
+  }
+  return 0;
+}
