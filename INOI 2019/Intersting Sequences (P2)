@@ -1,0 +1,53 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+#define x first
+#define y second
+
+int main() {
+   ios_base::sync_with_stdio(false);
+    int t;
+    cin >> t;
+    while(t--){
+        int n,L;
+        cin >> n >> L;
+        pair<int,int> a[n];
+        for(int i=0;i<n;i++){
+            cin >> a[i].x;
+            a[i].y = i;
+        }
+
+        sort(a,a+n,greater<>());
+
+        int ans=0;
+        for(int i=0;i<n;i++){
+            for(int j=i+1;j<n;j++){
+                if(a[i].x == a[j].x)
+                    ans = max(ans,abs(a[i].y - a[j].y));
+            }
+        }
+
+        int l=0,h=n;
+        while(l <= h){
+            int m = (l+h)/2;
+            int dp[n];
+            fill(dp, dp+n, 1);
+            bool check = false;
+            for(int i=1;i<n;i++){
+                for(int j=0;j<i;j++){
+                    if(abs(a[i].y - a[j].y) >= m)
+                        dp[i] = max(dp[i],dp[j]+1);
+                }
+                if(dp[i] >= L)
+                    check=true;
+            }
+            if(check)
+                ans = max(ans,m), l = m+1;
+            else
+                h = m-1;
+        }
+
+        cout << ans << "\n";
+    }
+    return 0;
+}
